@@ -155,7 +155,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
                 {item.name}
               </button>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.nav>
