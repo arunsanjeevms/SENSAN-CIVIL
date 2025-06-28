@@ -26,7 +26,35 @@ function App() {
 
   const handleSectionChange = (section: string) => {
     setCurrentSection(section);
+    
+    // Ensure scroll position is reset when changing sections
+    if (section === 'team') {
+      // For team section, scroll to top immediately
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+      }, 50);
+    }
   };
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      // Reset to home section on browser navigation
+      setCurrentSection('home');
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   if (loading) {
     return <Preloader />;

@@ -29,19 +29,53 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
     { name: 'Contact', href: '#contact', section: 'home' },
   ];
 
-  const handleNavClick = (item: typeof navItems[0]) => {
-    if (item.section === 'team') {
-      onSectionChange('team');
-    } else if (item.section === 'home') {
-      onSectionChange('home');
-      // Small delay to ensure the home section is rendered before scrolling
-      setTimeout(() => {
-        const element = document.querySelector(item.href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+  const scrollToTop = () => {
+    // Smooth scroll to top of the page
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollToElement = (selector: string) => {
+    // Small delay to ensure DOM is updated
+    setTimeout(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
+    }, 100);
+  };
+
+  const handleNavClick = (item: typeof navItems[0], event?: React.MouseEvent) => {
+    // Prevent default anchor behavior
+    if (event) {
+      event.preventDefault();
     }
+
+    if (item.section === 'team') {
+      // Navigate to Team section and scroll to top
+      onSectionChange('team');
+      scrollToTop();
+    } else if (item.section === 'home') {
+      // Navigate to Home section
+      onSectionChange('home');
+      
+      if (item.href === '#home') {
+        // If clicking "Home", scroll to top
+        scrollToTop();
+      } else {
+        // For other home section elements, scroll to specific element
+        scrollToElement(item.href);
+      }
+    }
+    
+    // Close mobile menu
     setIsMobileMenuOpen(false);
   };
 
@@ -58,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
           {/* Logo */}
           <motion.button
             whileHover={{ scale: 1.05 }}
-            onClick={() => onSectionChange('home')}
+            onClick={(e) => handleNavClick({ name: 'Home', href: '#home', section: 'home' }, e)}
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 bg-accent-color rounded-lg flex items-center justify-center">
@@ -76,7 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
               <motion.button
                 key={item.name}
                 whileHover={{ y: -2 }}
-                onClick={() => handleNavClick(item)}
+                onClick={(e) => handleNavClick(item, e)}
                 className="text-primary hover:text-accent-color transition-colors duration-200"
               >
                 {item.name}
@@ -115,13 +149,13 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
             {navItems.map((item) => (
               <button
                 key={item.name}
-                onClick={() => handleNavClick(item)}
+                onClick={(e) => handleNavClick(item, e)}
                 className="block w-full text-left py-2 text-primary hover:text-accent-color transition-colors"
               >
                 {item.name}
               </button>
             ))}
-          </motion.div>
+          </div>
         )}
       </div>
     </motion.nav>
