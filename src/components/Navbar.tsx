@@ -77,12 +77,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
                 key={item.name}
                 whileHover={{ y: -2 }}
                 onClick={() => handleNavClick(item)}
-                className={`transition-colors duration-200 ${
-                  (currentSection === 'home' && item.section === 'home') ||
-                  (currentSection === 'team' && item.section === 'team')
-                    ? 'text-accent-color'
-                    : 'text-primary hover:text-accent-color'
-                }`}
+                className="text-primary hover:text-accent-color transition-colors duration-200"
               >
                 {item.name}
               </motion.button>
@@ -121,12 +116,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
               <button
                 key={item.name}
                 onClick={() => handleNavClick(item)}
-                className={`block w-full text-left py-2 transition-colors ${
-                  (currentSection === 'home' && item.section === 'home') ||
-                  (currentSection === 'team' && item.section === 'team')
-                    ? 'text-accent-color'
-                    : 'text-primary hover:text-accent-color'
-                }`}
+                className="block w-full text-left py-2 text-primary hover:text-accent-color transition-colors"
               >
                 {item.name}
               </button>
