@@ -9,10 +9,12 @@ import Testimonials from './components/Testimonials';
 import Stats from './components/Stats';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Team from './components/Team';
 import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [currentSection, setCurrentSection] = useState('home');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -22,6 +24,10 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleSectionChange = (section: string) => {
+    setCurrentSection(section);
+  };
+
   if (loading) {
     return <Preloader />;
   }
@@ -29,15 +35,27 @@ function App() {
   return (
     <div className="min-h-screen bg-primary text-primary font-poppins">
       <ThemeToggle />
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Projects />
-      <Testimonials />
-      <Stats />
-      <Contact />
-      <Footer />
+      <Navbar onSectionChange={handleSectionChange} currentSection={currentSection} />
+      
+      {currentSection === 'home' && (
+        <div className="transition-opacity duration-500 ease-in-out">
+          <Hero />
+          <About />
+          <Services />
+          <Projects />
+          <Testimonials />
+          <Stats />
+          <Contact />
+          <Footer />
+        </div>
+      )}
+      
+      {currentSection === 'team' && (
+        <div className="transition-opacity duration-500 ease-in-out">
+          <Team />
+          <Footer />
+        </div>
+      )}
     </div>
   );
 }

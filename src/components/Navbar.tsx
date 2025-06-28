@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Menu, X, Phone, Mail, Home } from 'lucide-react';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onSectionChange: (section: string) => void;
+  currentSection: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onSectionChange, currentSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -16,17 +21,26 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '#home', section: 'home' },
+    { name: 'About', href: '#about', section: 'home' },
+    { name: 'Services', href: '#services', section: 'home' },
+    { name: 'Projects', href: '#projects', section: 'home' },
+    { name: 'Team', href: '#team', section: 'team' },
+    { name: 'Contact', href: '#contact', section: 'home' },
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavClick = (item: typeof navItems[0]) => {
+    if (item.section === 'team') {
+      onSectionChange('team');
+    } else if (item.section === 'home') {
+      onSectionChange('home');
+      // Small delay to ensure the home section is rendered before scrolling
+      setTimeout(() => {
+        const element = document.querySelector(item.href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
     setIsMobileMenuOpen(false);
   };
@@ -42,8 +56,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.05 }}
+            onClick={() => onSectionChange('home')}
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 bg-accent-color rounded-lg flex items-center justify-center">
@@ -53,7 +68,7 @@ const Navbar: React.FC = () => {
               <div className="font-bold text-lg">SENSAN</div>
               <div className="text-xs text-accent-color">INDIA PROJECTS</div>
             </div>
-          </motion.div>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -61,8 +76,13 @@ const Navbar: React.FC = () => {
               <motion.button
                 key={item.name}
                 whileHover={{ y: -2 }}
-                onClick={() => scrollToSection(item.href)}
-                className="text-primary hover:text-accent-color transition-colors duration-200"
+                onClick={() => handleNavClick(item)}
+                className={`transition-colors duration-200 ${
+                  (currentSection === 'home' && item.section === 'home') ||
+                  (currentSection === 'team' && item.section === 'team')
+                    ? 'text-accent-color'
+                    : 'text-primary hover:text-accent-color'
+                }`}
               >
                 {item.name}
               </motion.button>
@@ -100,8 +120,13 @@ const Navbar: React.FC = () => {
             {navItems.map((item) => (
               <button
                 key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left py-2 text-primary hover:text-accent-color transition-colors"
+                onClick={() => handleNavClick(item)}
+                className={`block w-full text-left py-2 transition-colors ${
+                  (currentSection === 'home' && item.section === 'home') ||
+                  (currentSection === 'team' && item.section === 'team')
+                    ? 'text-accent-color'
+                    : 'text-primary hover:text-accent-color'
+                }`}
               >
                 {item.name}
               </button>
