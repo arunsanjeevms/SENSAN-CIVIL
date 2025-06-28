@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
             className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg"
           >
             <span className="text-white">Engineering</span>
-            <span className="text-accent-color block">Excellence</span>
+            <span className="block" style={{ color: '#F4C430' }}>Excellence</span>
           </motion.h1>
 
           <motion.p
