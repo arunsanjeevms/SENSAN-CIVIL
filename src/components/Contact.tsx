@@ -59,6 +59,11 @@ const Contact: React.FC = () => {
     },
   ];
 
+  // Helper function to check if field should show floating label
+  const shouldFloat = (fieldName: string) => {
+    return focusedField === fieldName || formData[fieldName as keyof typeof formData] !== '';
+  };
+
   return (
     <section id="contact" className="py-20 bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,8 +101,12 @@ const Contact: React.FC = () => {
                 {/* Name and Email Row */}
                 <div className="form-row">
                   <div className="form-field">
+                    <label htmlFor="name" className={`form-label ${shouldFloat('name') ? 'form-label-float' : ''}`}>
+                      Your Name
+                    </label>
                     <input
                       type="text"
+                      id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
@@ -106,21 +115,15 @@ const Contact: React.FC = () => {
                       className="form-input"
                       required
                     />
-                    <motion.label
-                      animate={{
-                        y: focusedField === 'name' || formData.name ? -24 : 0,
-                        scale: focusedField === 'name' || formData.name ? 0.8 : 1,
-                        color: focusedField === 'name' ? 'var(--accent-color)' : 'var(--text-muted)',
-                      }}
-                      className="form-label"
-                    >
-                      Your Name
-                    </motion.label>
                   </div>
 
                   <div className="form-field">
+                    <label htmlFor="email" className={`form-label ${shouldFloat('email') ? 'form-label-float' : ''}`}>
+                      Email Address
+                    </label>
                     <input
                       type="email"
+                      id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -129,24 +132,18 @@ const Contact: React.FC = () => {
                       className="form-input"
                       required
                     />
-                    <motion.label
-                      animate={{
-                        y: focusedField === 'email' || formData.email ? -24 : 0,
-                        scale: focusedField === 'email' || formData.email ? 0.8 : 1,
-                        color: focusedField === 'email' ? 'var(--accent-color)' : 'var(--text-muted)',
-                      }}
-                      className="form-label"
-                    >
-                      Email Address
-                    </motion.label>
                   </div>
                 </div>
 
                 {/* Phone and Subject Row */}
                 <div className="form-row">
                   <div className="form-field">
+                    <label htmlFor="phone" className={`form-label ${shouldFloat('phone') ? 'form-label-float' : ''}`}>
+                      Phone Number
+                    </label>
                     <input
                       type="tel"
+                      id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
@@ -155,21 +152,15 @@ const Contact: React.FC = () => {
                       className="form-input"
                       required
                     />
-                    <motion.label
-                      animate={{
-                        y: focusedField === 'phone' || formData.phone ? -24 : 0,
-                        scale: focusedField === 'phone' || formData.phone ? 0.8 : 1,
-                        color: focusedField === 'phone' ? 'var(--accent-color)' : 'var(--text-muted)',
-                      }}
-                      className="form-label"
-                    >
-                      Phone Number
-                    </motion.label>
                   </div>
 
                   <div className="form-field">
+                    <label htmlFor="subject" className={`form-label ${shouldFloat('subject') ? 'form-label-float' : ''}`}>
+                      Subject
+                    </label>
                     <input
                       type="text"
+                      id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
@@ -178,22 +169,16 @@ const Contact: React.FC = () => {
                       className="form-input"
                       required
                     />
-                    <motion.label
-                      animate={{
-                        y: focusedField === 'subject' || formData.subject ? -24 : 0,
-                        scale: focusedField === 'subject' || formData.subject ? 0.8 : 1,
-                        color: focusedField === 'subject' ? 'var(--accent-color)' : 'var(--text-muted)',
-                      }}
-                      className="form-label"
-                    >
-                      Subject
-                    </motion.label>
                   </div>
                 </div>
 
                 {/* Message Field */}
                 <div className="form-field">
+                  <label htmlFor="message" className={`form-label ${shouldFloat('message') ? 'form-label-float' : ''}`}>
+                    Your Message
+                  </label>
                   <textarea
+                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
@@ -203,16 +188,6 @@ const Contact: React.FC = () => {
                     className="form-input resize-none"
                     required
                   />
-                  <motion.label
-                    animate={{
-                      y: focusedField === 'message' || formData.message ? -24 : 0,
-                      scale: focusedField === 'message' || formData.message ? 0.8 : 1,
-                      color: focusedField === 'message' ? 'var(--accent-color)' : 'var(--text-muted)',
-                    }}
-                    className="form-label"
-                  >
-                    Your Message
-                  </motion.label>
                 </div>
 
                 {/* Submit Button */}
@@ -326,10 +301,12 @@ const Contact: React.FC = () => {
           background-color: var(--bg-secondary);
           color: var(--text-color);
           border-radius: 0.5rem;
-          padding: 0.75rem 1rem;
+          padding: 1.25rem 0.75rem 0.5rem 0.75rem;
           border: 2px solid transparent;
           outline: none;
           transition: all 0.3s ease;
+          font-size: 1rem;
+          line-height: 1.5;
         }
 
         .form-input:focus {
@@ -337,14 +314,32 @@ const Contact: React.FC = () => {
           box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
         }
 
-        /* Form Labels */
+        /* Form Labels - Floating System */
         .form-label {
           position: absolute;
-          left: 1rem;
+          left: 0.75rem;
           top: 0.75rem;
+          color: var(--text-muted);
+          font-size: 1rem;
           pointer-events: none;
-          transform-origin: left;
+          transform-origin: left top;
           transition: all 0.3s ease;
+          background-color: var(--bg-secondary);
+          padding: 0 0.25rem;
+          border-radius: 0.25rem;
+          z-index: 1;
+        }
+
+        /* Floating Label State */
+        .form-label-float {
+          transform: translateY(-1.5rem) scale(0.75);
+          color: var(--accent-color);
+          font-weight: 500;
+        }
+
+        /* Focus state for labels */
+        .form-field:focus-within .form-label {
+          color: var(--accent-color);
         }
 
         /* Submit Button */
@@ -363,6 +358,7 @@ const Contact: React.FC = () => {
           cursor: pointer;
           transition: all 0.3s ease;
           margin-top: 0.5rem;
+          font-size: 1rem;
         }
 
         .form-submit-btn:hover {
@@ -459,6 +455,14 @@ const Contact: React.FC = () => {
           .contact-map {
             height: 8rem;
             padding: 1rem;
+          }
+
+          .form-input {
+            padding: 1rem 0.5rem 0.5rem 0.5rem;
+          }
+
+          .form-label {
+            left: 0.5rem;
           }
         }
       `}</style>
