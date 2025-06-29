@@ -219,9 +219,14 @@ const Footer: React.FC = () => {
 
         {/* Bottom Footer */}
         <div className="border-t border-primary pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-muted text-sm">
-            © 2024 SENSAN INDIA PROJECTS. All rights reserved.
-          </p>
+          <div className="text-center md:text-left">
+            <p className="text-muted text-sm mb-2">
+              © 2024 SENSAN INDIA PROJECTS. All rights reserved.
+            </p>
+            <p className="text-muted text-xs">
+              CIN: U65100MH1999PLC123456 | GST: 33ABOCS2240Q1ZW
+            </p>
+          </div>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-muted hover:text-accent-color transition-colors">
               Privacy Policy
